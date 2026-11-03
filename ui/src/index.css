@@ -3,9 +3,62 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply bg-[#0a0d14] text-slate-100 antialiased selection:bg-[#00ffcc] selection:text-black;
+  :root {
+    --otari-teal: #00C4B4;
+    --otari-teal-glow: rgba(0, 196, 180, 0.18);
+    --otari-dark: #08090A;
+    --otari-surface: #0E1217;
+    --otari-surface-elevated: #141A22;
+    --otari-border: #1E2633;
+    --mozilla-coral: #FF5935;
   }
+
+  body {
+    background-color: var(--otari-dark);
+    color: #F1F5F9;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  code, pre, .font-mono {
+    font-family: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+}
+
+/* Otari Glassmorphism & Glow Effects */
+.otari-card {
+  background: #0E1218;
+  border: 1px solid #1E2736;
+  border-radius: 12px;
+}
+
+.otari-card-elevated {
+  background: #131822;
+  border: 1px solid #243042;
+  border-radius: 10px;
+}
+
+.otari-glow {
+  box-shadow: 0 0 25px -5px rgba(0, 196, 180, 0.15);
+}
+
+.otari-button-primary {
+  background: linear-gradient(135deg, #00C4B4 0%, #009688 100%);
+  color: #041010;
+  font-weight: 700;
+  border-radius: 10px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.otari-button-primary:hover:not(:disabled) {
+  filter: brightness(1.1);
+  box-shadow: 0 4px 20px -2px rgba(0, 196, 180, 0.35);
+  transform: translateY(-1px);
+}
+
+.otari-button-primary:active:not(:disabled) {
+  transform: translateY(0px) scale(0.99);
 }
 
 /* Custom Scrollbar */
@@ -14,12 +67,12 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0d121f;
+  background: #08090A;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1f293d;
-  border-radius: 3px;
+  background: #1E2633;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #00ffcc;
+  background: #00C4B4;
 }
