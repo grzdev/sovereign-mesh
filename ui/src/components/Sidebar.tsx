@@ -3,15 +3,11 @@ import {
   Terminal, 
   Activity, 
   ShieldCheck, 
-  Cpu, 
-  Cloud, 
-  Lock, 
-  ExternalLink, 
-  DollarSign,
-  Layers,
-  Sparkles,
-  Zap
+  Layers, 
+  Zap, 
+  Lock
 } from 'lucide-react';
+import { MeshLogo } from './MeshLogo';
 
 export type ActiveView = 'studio' | 'observability' | 'vault' | 'models';
 
@@ -61,15 +57,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, tel
   ];
 
   return (
-    <aside className="w-64 bg-[#0A0D13] border-r border-[#171F2D] flex flex-col justify-between flex-shrink-0 select-none">
+    <aside className="w-64 bg-[#0A0D13] border-r border-[#171F2D] flex flex-col justify-between flex-shrink-0 select-none h-screen">
       {/* Brand Header */}
       <div>
         <div className="p-4 border-b border-[#171F2D] flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#00C4B4] to-[#007788] p-[1.5px] shadow-sm shadow-[#00C4B4]/20 flex items-center justify-center">
-              <div className="w-full h-full bg-[#0A0D13] rounded-[7px] flex items-center justify-center">
-                <ShieldCheck className="w-4 h-4 text-[#00C4B4]" />
-              </div>
+            {/* Metadata Favicon Geometric Mesh Logo */}
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#00C4B4]/20 to-[#005B63]/30 border border-[#00C4B4]/40 flex items-center justify-center shadow-sm">
+              <MeshLogo className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
@@ -83,7 +78,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, tel
           </span>
         </div>
 
-        {/* Navigation Section */}
+        {/* Navigation Section with Zero Twitching */}
         <div className="p-3 flex flex-col gap-1">
           <div className="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500 font-mono">
             Platform Views
@@ -96,10 +91,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView, tel
                 key={item.id}
                 type="button"
                 onClick={() => setActiveView(item.id)}
-                className={`w-full text-left px-3 py-2.5 rounded-lg flex items-center justify-between transition-all cursor-pointer ${
+                className={`w-full text-left px-3 py-2.5 rounded-lg flex items-center justify-between transition-colors cursor-pointer border ${
                   isActive
-                    ? 'bg-[#131B27] text-white border border-[#223147] shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-[#0E1420]'
+                    ? 'bg-[#131B27] text-white border-[#223147] shadow-sm'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-[#0E1420] border-transparent'
                 }`}
               >
                 <div className="flex items-center gap-2.5 min-w-0">

@@ -1,14 +1,11 @@
 import React from 'react';
 import { 
-  ShieldCheck, 
   Lock, 
-  Terminal, 
   Sparkles, 
-  ExternalLink,
   ChevronRight,
-  Zap,
-  RotateCcw
+  Zap
 } from 'lucide-react';
+import { MeshLogo } from './MeshLogo';
 
 interface HeaderProps {
   activeView: string;
@@ -46,12 +43,13 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="h-14 border-b border-[#171F2D] bg-[#0A0D13]/95 backdrop-blur px-6 flex items-center justify-between flex-shrink-0 z-40">
-      {/* Breadcrumbs & Title */}
+      {/* Breadcrumbs & Logo */}
       <div className="flex items-center gap-3">
-        <div className="flex items-center gap-1.5 text-xs text-slate-500 font-mono">
-          <span>sovereign-mesh</span>
+        <div className="flex items-center gap-2">
+          <MeshLogo className="w-4 h-4" />
+          <span className="text-xs text-slate-500 font-mono">sovereign-mesh</span>
           <ChevronRight className="w-3 h-3 text-slate-600" />
-          <span className="text-slate-300 font-medium">{activeView}</span>
+          <span className="text-xs text-slate-300 font-medium font-mono">{activeView}</span>
         </div>
         <span className="text-slate-700">|</span>
         <div className="hidden md:flex items-center gap-2">
@@ -72,10 +70,10 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onResetPresets}
-            className="text-xs px-2.5 py-1 rounded-md bg-[#121824] hover:bg-[#1A2333] border border-[#202C3E] text-slate-300 flex items-center gap-1.5 transition cursor-pointer"
+            className="text-xs px-2.5 py-1.5 rounded-md bg-[#121824] hover:bg-[#1A2333] border border-[#202C3E] text-slate-300 flex items-center gap-1.5 transition cursor-pointer"
             title="Load sample vulnerable microservice"
           >
-            <Sparkles className="w-3 h-3 text-[#00C4B4]" />
+            <Sparkles className="w-3.5 h-3.5 text-[#00C4B4]" />
             <span>Load Sample</span>
           </button>
         )}
