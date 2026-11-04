@@ -3,7 +3,8 @@ import {
   Lock, 
   Sparkles, 
   ChevronRight,
-  Zap
+  Zap,
+  Menu
 } from 'lucide-react';
 import { MeshLogo } from './MeshLogo';
 
@@ -12,60 +13,68 @@ interface HeaderProps {
   onResetPresets: () => void;
   isProcessing: boolean;
   onRun: () => void;
+  onToggleMobileMenu: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ 
   activeView, 
   onResetPresets, 
   isProcessing, 
-  onRun 
+  onRun,
+  onToggleMobileMenu
 }) => {
   const viewTitles: Record<string, { title: string; subtitle: string }> = {
     studio: {
-      title: 'Gateway Studio & Playground',
-      subtitle: 'Air-gap sandbox testing across local models and Otari open-weights'
+      title: 'Studio & Gateway',
+      subtitle: 'Air-gap sandbox testing'
     },
     observability: {
-      title: 'Token Observability & Audit Trail',
-      subtitle: 'Real-time telemetry showing where every token goes and dollar savings'
+      title: 'Token Observability',
+      subtitle: 'Audit trail & spend telemetry'
     },
     vault: {
-      title: 'Air-Gap Vault & Data Compliance',
-      subtitle: 'In-memory isolated credentials and zero-leak verification matrix'
+      title: 'Air-Gap Vault',
+      subtitle: 'Data compliance matrix'
     },
     models: {
-      title: 'Open-Weight Model Registry',
-      subtitle: 'Connected providers via Mozilla Otari gateway and local edge runners'
+      title: 'Model Registry',
+      subtitle: 'Connected open-weight providers'
     }
   };
 
   const current = viewTitles[activeView] || viewTitles.studio;
 
   return (
-    <header className="h-14 border-b border-[#171F2D] bg-[#0A0D13]/95 backdrop-blur px-6 flex items-center justify-between flex-shrink-0 z-40">
-      {/* Breadcrumbs & Logo */}
-      <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2">
-          <MeshLogo className="w-4 h-4" />
-          <span className="text-xs text-slate-500 font-mono">sovereign-mesh</span>
-          <ChevronRight className="w-3 h-3 text-slate-600" />
-          <span className="text-xs text-slate-300 font-medium font-mono">{activeView}</span>
-        </div>
-        <span className="text-slate-700">|</span>
-        <div className="hidden md:flex items-center gap-2">
-          <span className="text-xs font-semibold text-white">{current.title}</span>
+    <header className="h-14 border-b border-[#171F2D] bg-[#0A0D13]/95 backdrop-blur px-4 sm:px-6 flex items-center justify-between flex-shrink-0 z-30">
+      {/* Left: Mobile Menu Trigger + Breadcrumbs */}
+      <div className="flex items-center gap-3 min-w-0">
+        {/* Mobile Hamburger Button */}
+        <button
+          type="button"
+          onClick={onToggleMobileMenu}
+          className="md:hidden p-1.5 rounded-lg bg-[#121824] border border-[#1E2738] text-slate-300 hover:text-white cursor-pointer"
+          aria-label="Toggle navigation menu"
+        >
+          <Menu className="w-4 h-4" />
+        </button>
+
+        <div className="flex items-center gap-2 min-w-0">
+          <MeshLogo className="w-4 h-4 flex-shrink-0 hidden sm:block" />
+          <span className="text-xs text-slate-500 font-mono hidden sm:inline">sovereign-mesh</span>
+          <ChevronRight className="w-3 h-3 text-slate-600 hidden sm:inline" />
+          <span className="text-xs text-slate-200 font-semibold font-mono truncate">{current.title}</span>
         </div>
       </div>
 
-      {/* Global Action Pills */}
-      <div className="flex items-center gap-3">
+      {/* Right: Actions & Status Pills */}
+      <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
         {/* Air-Gap Verification Shield */}
-        <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-medium">
+        <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-medium">
           <Lock className="w-3 h-3" />
           <span>Air-Gap Active: 0 Bytes Leaked</span>
         </div>
 
-        {/* Quick Reset Button */}
+        {/* Quick Sample Load Button (Studio only) */}
         {activeView === 'studio' && (
           <button
             type="button"
@@ -74,27 +83,27 @@ export const Header: React.FC<HeaderProps> = ({
             title="Load sample vulnerable microservice"
           >
             <Sparkles className="w-3.5 h-3.5 text-[#00C4B4]" />
-            <span>Load Sample</span>
+            <span className="hidden sm:inline">Sample</span>
           </button>
         )}
 
-        {/* Header Run Action Button (Studio only) */}
+        {/* Execute Pipeline Action Button (Studio only) */}
         {activeView === 'studio' && (
           <button
             type="button"
             onClick={onRun}
             disabled={isProcessing}
-            className="otari-button-primary text-xs font-bold px-3 py-1.5 flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+            className="otari-button-primary text-xs font-bold px-3 py-1.5 flex items-center gap-1.5 cursor-pointer disabled:opacity-50 shadow-sm"
           >
             {isProcessing ? (
               <>
                 <span className="w-3 h-3 border-2 border-black border-t-transparent rounded-full animate-spin"></span>
-                <span>Executing...</span>
+                <span>Running...</span>
               </>
             ) : (
               <>
                 <Zap className="w-3 h-3 fill-current" />
-                <span>Run Pipeline</span>
+                <span>Run</span>
               </>
             )}
           </button>

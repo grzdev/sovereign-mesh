@@ -176,13 +176,18 @@ export default function App() {
     }
   };
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <div className="flex h-screen bg-[#08090A] text-slate-100 font-sans overflow-hidden">
-      {/* 1. Collapsible Sidebar */}
+      {/* 1. Collapsible Sidebar with Mobile Support */}
       <Sidebar
         activeView={activeView}
         setActiveView={setActiveView}
         telemetry={telemetry}
+        mobileOpen={mobileMenuOpen}
+        onCloseMobile={() => setMobileMenuOpen(false)}
+        onLoadPreset={handleLoadPreset}
       />
 
       {/* 2. Main Content Canvas */}
@@ -193,10 +198,11 @@ export default function App() {
           onResetPresets={() => handleLoadPreset('vulnerable')}
           isProcessing={isProcessing}
           onRun={handleRun}
+          onToggleMobileMenu={() => setMobileMenuOpen(!mobileMenuOpen)}
         />
 
         {/* Dynamic Views */}
-        <div className="flex-1 overflow-y-auto flex flex-col">
+        <div className="flex-1 overflow-y-auto flex flex-col min-h-0">
           {activeView === 'studio' && (
             <StudioView
               prompt={prompt}
