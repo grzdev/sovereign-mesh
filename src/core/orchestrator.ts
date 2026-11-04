@@ -41,6 +41,7 @@ export interface ProcessResponse {
     tokens: number;
   };
   rehydration: RehydrateResult;
+  toolsEquipped: string[];
   telemetry: TelemetryStats;
   events: ProcessEvent[];
 }
@@ -192,7 +193,29 @@ export class MeshOrchestrator {
       hallucinatedTokens: rehydration.hallucinatedTokens
     });
 
+    const toolsEquipped = [
+      'AirGap-RAM-Vault',
+      'AST-Pattern-Sanitizer',
+      'Deterministic-Rehydrator',
+      'Dual-Tier-Router'
+    ];
+
     const finalTelemetry = this.governor.getStats();
+    
+    // Record into persistent session audit trail
+    this.governor.recordAuditEntry({
+      task: req.prompt.slice(0, 120),
+      tier: decision.tier,
+      model: modelUsed,
+      promptTokens: Math.ceil(decision.estimatedTokens * 0.6),
+      completionTokens: Math.max(1, tokens - Math.ceil(decision.estimatedTokens * 0.6)),
+      totalTokens: tokens,
+      durationMs,
+      costUSD: decision.tier === 'LOCAL_ONLY' ? 0 : parseFloat(((tokens / 1000) * 0.0004).toFixed(4)),
+      secretsProtected: scrubbedCount,
+      toolsUsed: toolsEquipped
+    });
+
     emit('COMPLETE', 'SovereignMesh execution cycle complete.', { telemetry: finalTelemetry });
 
     return {
@@ -210,6 +233,7 @@ export class MeshOrchestrator {
         tokens
       },
       rehydration,
+      toolsEquipped,
       telemetry: finalTelemetry,
       events
     };

@@ -25,7 +25,8 @@ async function main() {
     // Send initial stats on connect
     connection.send(JSON.stringify({
       type: 'INIT_STATS',
-      telemetry: orchestrator.getGovernor().getStats()
+      telemetry: orchestrator.getGovernor().getStats(),
+      auditLog: orchestrator.getGovernor().getAuditLog()
     }));
 
     connection.on('close', () => {
@@ -75,6 +76,11 @@ async function main() {
     return orchestrator.getGovernor().getStats();
   });
 
+  // Request Audit Log
+  app.get('/api/mesh/audit', async () => {
+    return orchestrator.getGovernor().getAuditLog();
+  });
+
   // Process a task through the air-gap pipeline
   app.post('/api/mesh/process', async (req, reply) => {
     const body = req.body as ProcessRequest;
@@ -90,7 +96,8 @@ async function main() {
       broadcast({
         type: 'TASK_COMPLETE',
         telemetry: result.telemetry,
-        decision: result.decision
+        decision: result.decision,
+        auditLog: orchestrator.getGovernor().getAuditLog()
       });
 
       return result;

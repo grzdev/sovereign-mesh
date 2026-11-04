@@ -10,6 +10,21 @@ export interface GovernorConfig {
   estPricePer1KTokens: number; // e.g. $0.0004 per 1k tokens
 }
 
+export interface RequestAuditEntry {
+  id: string;
+  timestamp: string;
+  task: string;
+  tier: 'LOCAL_ONLY' | 'OTARI_HYBRID';
+  model: string;
+  promptTokens: number;
+  completionTokens: number;
+  totalTokens: number;
+  durationMs: number;
+  costUSD: number;
+  secretsProtected: number;
+  toolsUsed: string[];
+}
+
 export interface TelemetryStats {
   totalRequests: number;
   localRequests: number;
@@ -30,6 +45,7 @@ export class BudgetGovernor {
   private localTokens = 0;
   private cloudTokens = 0;
   private totalRedactions = 0;
+  private auditLog: RequestAuditEntry[] = [];
 
   constructor(config: Partial<GovernorConfig> = {}) {
     this.config = {
@@ -73,6 +89,23 @@ export class BudgetGovernor {
     this.cloudRequests++;
     this.cloudTokens += tokens;
     this.totalRedactions += redactionsCount;
+  }
+
+  recordAuditEntry(entry: Omit<RequestAuditEntry, 'id' | 'timestamp'>): RequestAuditEntry {
+    const fullEntry: RequestAuditEntry = {
+      id: `req_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+      timestamp: new Date().toISOString(),
+      ...entry
+    };
+    this.auditLog.unshift(fullEntry); // newest first
+    if (this.auditLog.length > 100) {
+      this.auditLog.pop(); // keep last 100 in RAM
+    }
+    return fullEntry;
+  }
+
+  getAuditLog(): RequestAuditEntry[] {
+    return [...this.auditLog];
   }
 
   getStats(): TelemetryStats {
