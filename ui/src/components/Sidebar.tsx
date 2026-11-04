@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Terminal, 
   Activity, 
@@ -9,8 +9,7 @@ import {
   Wrench,
   Sparkles,
   X,
-  FileCode,
-  CheckCircle2
+  ChevronDown
 } from 'lucide-react';
 import { MeshLogo } from './MeshLogo';
 
@@ -39,6 +38,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onLoadPreset
 }) => {
   const budgetPercentUsed = Math.min(100, Math.max(0, (telemetry.dollarsSpent / 2.0) * 100));
+
+  // Accordion dropdown states (Default collapsed to keep sidebar minimalist & calm)
+  const [toolsOpen, setToolsOpen] = useState(false);
+  const [presetsOpen, setPresetsOpen] = useState(false);
 
   const navItems = [
     {
@@ -91,7 +94,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         ${mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
       `}>
         {/* Brand Header */}
-        <div>
+        <div className="flex-1 overflow-y-auto">
           <div className="p-4 border-b border-[#171F2D] flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#00C4B4]/20 to-[#005B63]/30 border border-[#00C4B4]/40 flex items-center justify-center shadow-sm">
@@ -120,7 +123,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           {/* Navigation Section */}
           <div className="p-3 flex flex-col gap-1">
-            <div className="px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500 font-mono">
+            <div className="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500 font-mono">
               Platform Views
             </div>
             {navItems.map((item) => {
@@ -156,58 +159,81 @@ export const Sidebar: React.FC<SidebarProps> = ({
             })}
           </div>
 
-          {/* Equipped Tools Suite in Sidebar (Moved from top toolbar) */}
+          {/* Collapsible Dropdown 1: Equipped Tools with Ease-in-out Animation */}
           <div className="px-3 pt-2">
-            <div className="px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500 font-mono flex items-center justify-between">
-              <span className="flex items-center gap-1">
-                <Wrench className="w-3 h-3 text-[#00C4B4]" /> Equipped Tools
+            <button
+              type="button"
+              onClick={() => setToolsOpen(!toolsOpen)}
+              className="w-full flex items-center justify-between px-2.5 py-1.5 text-xs text-slate-400 hover:text-slate-200 rounded-lg hover:bg-[#0E1420] transition-colors cursor-pointer border border-transparent"
+            >
+              <span className="flex items-center gap-2 text-[11px] font-medium">
+                <Wrench className="w-3.5 h-3.5 text-[#00C4B4]" />
+                <span>Equipped Tools</span>
+                <span className="text-[10px] text-emerald-400 font-mono">(3)</span>
               </span>
-              <span className="text-emerald-400 text-[9px] font-sans">Active</span>
-            </div>
-            <div className="flex flex-col gap-1 mt-1">
-              {equippedTools.map((tool, idx) => (
-                <div key={idx} className="px-2.5 py-1.5 rounded-md bg-[#0D121B] border border-[#161F2E] flex items-center justify-between">
-                  <div className="text-[11px] font-medium text-slate-300 truncate">{tool.name}</div>
-                  <span className="text-[9px] text-[#00C4B4] font-mono font-semibold">Ready</span>
-                </div>
-              ))}
+              <ChevronDown className={`w-3.5 h-3.5 text-slate-500 transition-transform duration-300 ease-in-out ${toolsOpen ? 'rotate-180 text-[#00C4B4]' : 'rotate-0'}`} />
+            </button>
+
+            {/* Smooth Accordion Content */}
+            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${toolsOpen ? 'max-h-48 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
+              <div className="flex flex-col gap-1 pl-2 border-l border-[#192231] ml-2">
+                {equippedTools.map((tool, idx) => (
+                  <div key={idx} className="px-2 py-1.5 rounded-md bg-[#0D121B] border border-[#161F2E] flex items-center justify-between text-[11px]">
+                    <span className="text-slate-300 truncate">{tool.name}</span>
+                    <span className="text-[9px] text-[#00C4B4] font-mono font-semibold">Active</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Quick Presets in Sidebar */}
-          <div className="px-3 pt-3">
-            <div className="px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500 font-mono flex items-center gap-1">
-              <Sparkles className="w-3 h-3 text-[#00C4B4]" /> Quick Presets
-            </div>
-            <div className="flex flex-col gap-1 mt-1">
-              <button
-                type="button"
-                onClick={() => {
-                  onLoadPreset('vulnerable');
-                  setActiveView('studio');
-                  onCloseMobile();
-                }}
-                className="w-full text-left px-2.5 py-1.5 rounded-md bg-[#0D121B] hover:bg-[#141E2D] border border-[#161F2E] text-[11px] text-slate-300 hover:text-white transition cursor-pointer truncate"
-              >
-                ⚡ Payment Microservice
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  onLoadPreset('docstring');
-                  setActiveView('studio');
-                  onCloseMobile();
-                }}
-                className="w-full text-left px-2.5 py-1.5 rounded-md bg-[#0D121B] hover:bg-[#141E2D] border border-[#161F2E] text-[11px] text-slate-300 hover:text-white transition cursor-pointer truncate"
-              >
-                🔒 Local Docstring ($0)
-              </button>
+          {/* Collapsible Dropdown 2: Quick Presets with Ease-in-out Animation */}
+          <div className="px-3 pt-2">
+            <button
+              type="button"
+              onClick={() => setPresetsOpen(!presetsOpen)}
+              className="w-full flex items-center justify-between px-2.5 py-1.5 text-xs text-slate-400 hover:text-slate-200 rounded-lg hover:bg-[#0E1420] transition-colors cursor-pointer border border-transparent"
+            >
+              <span className="flex items-center gap-2 text-[11px] font-medium">
+                <Sparkles className="w-3.5 h-3.5 text-[#00C4B4]" />
+                <span>Quick Presets</span>
+                <span className="text-[10px] text-slate-500 font-mono">(2)</span>
+              </span>
+              <ChevronDown className={`w-3.5 h-3.5 text-slate-500 transition-transform duration-300 ease-in-out ${presetsOpen ? 'rotate-180 text-[#00C4B4]' : 'rotate-0'}`} />
+            </button>
+
+            {/* Smooth Accordion Content */}
+            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${presetsOpen ? 'max-h-40 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
+              <div className="flex flex-col gap-1 pl-2 border-l border-[#192231] ml-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    onLoadPreset('vulnerable');
+                    setActiveView('studio');
+                    onCloseMobile();
+                  }}
+                  className="w-full text-left px-2 py-1.5 rounded-md bg-[#0D121B] hover:bg-[#141E2D] border border-[#161F2E] text-[11px] text-slate-300 hover:text-white transition-colors cursor-pointer truncate"
+                >
+                  ⚡ Payment Service
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onLoadPreset('docstring');
+                    setActiveView('studio');
+                    onCloseMobile();
+                  }}
+                  className="w-full text-left px-2 py-1.5 rounded-md bg-[#0D121B] hover:bg-[#141E2D] border border-[#161F2E] text-[11px] text-slate-300 hover:text-white transition-colors cursor-pointer truncate"
+                >
+                  🔒 Local Docstring ($0)
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Bottom Infrastructure & Budget Footer */}
-        <div className="p-3 border-t border-[#171F2D] flex flex-col gap-2.5 bg-[#080B10]">
+        <div className="p-3 border-t border-[#171F2D] flex flex-col gap-2.5 bg-[#080B10] flex-shrink-0">
           {/* Virtual Key Budget Card */}
           <div className="p-2.5 rounded-lg bg-[#0F141F] border border-[#1C2638] flex flex-col gap-1.5">
             <div className="flex items-center justify-between text-[11px]">
