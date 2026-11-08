@@ -197,13 +197,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <span className="flex items-center gap-2 text-[11px] font-medium">
                 <Sparkles className="w-3.5 h-3.5 text-[#00C4B4]" />
                 <span>Quick Presets</span>
-                <span className="text-[10px] text-slate-500 font-mono">(2)</span>
+                <span className="text-[10px] text-slate-500 font-mono">(3)</span>
               </span>
               <ChevronDown className={`w-3.5 h-3.5 text-slate-500 transition-transform duration-300 ease-in-out ${presetsOpen ? 'rotate-180 text-[#00C4B4]' : 'rotate-0'}`} />
             </button>
 
             {/* Smooth Accordion Content */}
-            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${presetsOpen ? 'max-h-40 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
+            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${presetsOpen ? 'max-h-48 opacity-100 mt-1' : 'max-h-0 opacity-0'}`}>
               <div className="flex flex-col gap-1 pl-2 border-l border-[#192231] ml-2">
                 <button
                   type="button"
@@ -226,6 +226,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   className="w-full text-left px-2 py-1.5 rounded-md bg-[#0D121B] hover:bg-[#141E2D] border border-[#161F2E] text-[11px] text-slate-300 hover:text-white transition-colors cursor-pointer truncate"
                 >
                   🔒 Local Docstring ($0)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onLoadPreset('circuitBreaker');
+                    setActiveView('studio');
+                    onCloseMobile();
+                  }}
+                  className="w-full text-left px-2 py-1.5 rounded-md bg-[#0D121B] hover:bg-[#141E2D] border border-[#161F2E] text-[11px] text-slate-300 hover:text-white transition-colors cursor-pointer truncate"
+                >
+                  🛡️ Circuit Breaker
                 </button>
               </div>
             </div>

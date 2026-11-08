@@ -1,7 +1,6 @@
 import React from 'react';
 import { 
   Lock, 
-  Sparkles, 
   ChevronRight,
   Zap,
   Menu
@@ -10,7 +9,6 @@ import { MeshLogo } from './MeshLogo';
 
 interface HeaderProps {
   activeView: string;
-  onResetPresets: () => void;
   isProcessing: boolean;
   onRun: () => void;
   onToggleMobileMenu: () => void;
@@ -18,7 +16,6 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ 
   activeView, 
-  onResetPresets, 
   isProcessing, 
   onRun,
   onToggleMobileMenu
@@ -73,19 +70,6 @@ export const Header: React.FC<HeaderProps> = ({
           <Lock className="w-3 h-3" />
           <span>Air-Gap Active: 0 Bytes Leaked</span>
         </div>
-
-        {/* Quick Sample Load Button (Studio only) */}
-        {activeView === 'studio' && (
-          <button
-            type="button"
-            onClick={onResetPresets}
-            className="text-xs px-2.5 py-1.5 rounded-md bg-[#121824] hover:bg-[#1A2333] border border-[#202C3E] text-slate-300 flex items-center gap-1.5 transition cursor-pointer"
-            title="Load sample vulnerable microservice"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-[#00C4B4]" />
-            <span className="hidden sm:inline">Sample</span>
-          </button>
-        )}
 
         {/* Execute Pipeline Action Button (Studio only) */}
         {activeView === 'studio' && (

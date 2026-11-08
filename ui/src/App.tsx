@@ -162,17 +162,17 @@ export default function App() {
       setPrompt('Architect an asynchronous connection pool and retry policy with exponential backoff');
       setCode(SAMPLE_VULNERABLE_CODE);
       setSelectedModel('alibaba/qwen-3.5-35b-a3b');
-      setPreference('cloud');
+      setPreference('auto');
     } else if (type === 'docstring') {
       setPrompt('Add detailed JSDoc documentation and TypeScript parameter annotations to this function');
       setCode(SAMPLE_LOCAL_CODE);
       setSelectedModel('llama3.2:1b');
-      setPreference('local');
+      setPreference('auto');
     } else if (type === 'circuitBreaker') {
       setPrompt('Implement a resilient circuit breaker with exponential backoff and jitter for chargeCard');
       setCode(SAMPLE_CIRCUIT_BREAKER_CODE);
       setSelectedModel('meta/llama-3.3-70b-instruct');
-      setPreference('cloud');
+      setPreference('auto');
     }
   };
 
@@ -195,7 +195,6 @@ export default function App() {
         {/* Top Minimalist Header */}
         <Header
           activeView={activeView}
-          onResetPresets={() => handleLoadPreset('vulnerable')}
           isProcessing={isProcessing}
           onRun={handleRun}
           onToggleMobileMenu={() => setMobileMenuOpen(!mobileMenuOpen)}

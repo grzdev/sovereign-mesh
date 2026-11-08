@@ -94,6 +94,19 @@ export const StudioView: React.FC<StudioViewProps> = ({
   const [activeConsoleTab, setActiveConsoleTab] = useState<'solution' | 'diff' | 'events'>('solution');
   const [copied, setCopied] = useState(false);
   const [showFullExplanation, setShowFullExplanation] = useState(false);
+  const [sampleMenuOpen, setSampleMenuOpen] = useState(false);
+  const [activeSampleTitle, setActiveSampleTitle] = useState('Payment Microservice');
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const handleSelectSample = (preset: 'vulnerable' | 'docstring' | 'circuitBreaker', title: string) => {
+    onLoadPreset(preset);
+    setActiveSampleTitle(title);
+    setSampleMenuOpen(false);
+    setToastMessage(`Loaded: ${title}`);
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 2500);
+  };
 
   // Automatically switch tabs based on execution lifecycle
   useEffect(() => {
@@ -218,16 +231,106 @@ export const StudioView: React.FC<StudioViewProps> = ({
           </div>
         </div>
 
-        {/* Right: Quick Action Presets */}
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => onLoadPreset('vulnerable')}
-            className="text-xs px-2.5 py-1.5 rounded-lg bg-[#14202B] hover:bg-[#1C2C3D] border border-[#00C4B4]/40 hover:border-[#00C4B4] text-[#00E5D0] font-semibold whitespace-nowrap transition flex items-center gap-1.5 cursor-pointer shadow-sm"
-          >
-            <Sparkles className="w-3 h-3 text-[#00C4B4]" />
-            <span>Load Sample</span>
-          </button>
+        {/* Right: Load Sample Selector with Dropdown */}
+        <div className="relative flex items-center gap-2">
+          {toastMessage && (
+            <span className="text-[11px] font-medium text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded whitespace-nowrap">
+              ✓ {toastMessage}
+            </span>
+          )}
+
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setSampleMenuOpen(!sampleMenuOpen)}
+              className="text-xs px-2.5 py-1.5 rounded-lg bg-[#14202B] hover:bg-[#1C2C3D] border border-[#00C4B4]/40 hover:border-[#00C4B4] text-[#00E5D0] font-semibold whitespace-nowrap transition flex items-center gap-1.5 cursor-pointer shadow-sm"
+              title="Select sample code scenario to test Air-Gap Sanitization or Edge Triage"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-[#00C4B4]" />
+              <span>Load Sample: <strong className="text-white font-normal">{activeSampleTitle}</strong></span>
+              <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${sampleMenuOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {sampleMenuOpen && (
+              <>
+                <div 
+                  className="fixed inset-0 z-40" 
+                  onClick={() => setSampleMenuOpen(false)}
+                />
+                <div className="absolute right-0 mt-1.5 w-72 rounded-xl bg-[#0D121B] border border-[#233146] shadow-2xl p-1.5 z-50 flex flex-col gap-1 text-xs">
+                  <div className="px-2 py-1 text-[10px] font-mono uppercase text-slate-500 border-b border-[#182232]">
+                    Select Test Scenario
+                  </div>
+
+                  {/* Preset 1: Vulnerable Payment Service */}
+                  <button
+                    type="button"
+                    onClick={() => handleSelectSample('vulnerable', 'Payment Microservice')}
+                    className={`w-full text-left p-2 rounded-lg transition-colors cursor-pointer flex flex-col gap-0.5 ${
+                      activeSampleTitle === 'Payment Microservice'
+                        ? 'bg-[#142130] border border-[#00C4B4]/30'
+                        : 'hover:bg-[#121926] border border-transparent'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-slate-200 flex items-center gap-1.5">
+                        <Lock className="w-3 h-3 text-purple-400" />
+                        <span>Payment Microservice</span>
+                      </span>
+                      <span className="text-[10px] font-mono text-purple-300 bg-purple-500/20 px-1.5 py-0.2 rounded">5 Secrets</span>
+                    </div>
+                    <p className="text-[11px] text-slate-400">
+                      Tests Air-Gap RAM quarantine + Otari Cloud synthesis.
+                    </p>
+                  </button>
+
+                  {/* Preset 2: Local Math Docstring */}
+                  <button
+                    type="button"
+                    onClick={() => handleSelectSample('docstring', 'Local Docstring ($0)')}
+                    className={`w-full text-left p-2 rounded-lg transition-colors cursor-pointer flex flex-col gap-0.5 ${
+                      activeSampleTitle === 'Local Docstring ($0)'
+                        ? 'bg-[#142130] border border-[#00C4B4]/30'
+                        : 'hover:bg-[#121926] border border-transparent'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-slate-200 flex items-center gap-1.5">
+                        <Cpu className="w-3 h-3 text-emerald-400" />
+                        <span>Local Docstring ($0)</span>
+                      </span>
+                      <span className="text-[10px] font-mono text-emerald-300 bg-emerald-500/20 px-1.5 py-0.2 rounded">Ollama Edge</span>
+                    </div>
+                    <p className="text-[11px] text-slate-400">
+                      Tests $0 fast-path local edge execution (0 network bytes).
+                    </p>
+                  </button>
+
+                  {/* Preset 3: Circuit Breaker */}
+                  <button
+                    type="button"
+                    onClick={() => handleSelectSample('circuitBreaker', 'Circuit Breaker')}
+                    className={`w-full text-left p-2 rounded-lg transition-colors cursor-pointer flex flex-col gap-0.5 ${
+                      activeSampleTitle === 'Circuit Breaker'
+                        ? 'bg-[#142130] border border-[#00C4B4]/30'
+                        : 'hover:bg-[#121926] border border-transparent'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-slate-200 flex items-center gap-1.5">
+                        <Cloud className="w-3 h-3 text-cyan-400" />
+                        <span>Circuit Breaker</span>
+                      </span>
+                      <span className="text-[10px] font-mono text-cyan-300 bg-cyan-500/20 px-1.5 py-0.2 rounded">Otari Llama 3.3</span>
+                    </div>
+                    <p className="text-[11px] text-slate-400">
+                      Tests distributed fault-tolerance reasoning on Otari.
+                    </p>
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
       </div>
