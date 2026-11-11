@@ -198,7 +198,7 @@ sovereign-mesh/
 
 ### 2. Installation
 ```bash
-git clone https://github.com/YOUR_GITHUB_USERNAME/sovereign-mesh.git
+git clone https://github.com/grzdev/sovereign-mesh.git
 cd sovereign-mesh
 npm install
 cd ui && npm install && cd ..
