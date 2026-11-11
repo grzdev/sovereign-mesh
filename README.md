@@ -1,110 +1,228 @@
-# SovereignMesh 🛡️⚡
-> **The Zero-Leak Hybrid Agent Gateway: Local PC Edge (Ollama) + Mozilla Otari Hosted Open-Weights**
+# 🛡️ SovereignMesh
 
-Built for the **Mozilla Otari Hackathon — "Developers Wilding: Online" (MozFest)**.
+> **The Zero-Leak Hybrid Agent Gateway: On-Device Edge (Ollama) + Mozilla Otari Hosted Open-Weights**  
+> *Equipping open-weight models with air-gap secret quarantine, token observability, and intelligent edge routing.*
 
-[![Mozilla Otari](https://img.shields.io/badge/Powered%20By-Mozilla%20Otari-00ffcc?style=for-the-badge)](https://otari.ai)
-[![Ollama](https://img.shields.io/badge/Local%20Edge-Ollama%20llama3.2-white?style=for-the-badge)](https://ollama.com)
+[![Demo Video](https://img.shields.io/badge/Demo%20Video-Watch%20Walkthrough-red?style=for-the-badge&logo=google-drive&logoColor=white)](https://drive.google.com/file/d/1LgIBT3jSXgmCB3HMGcdogS_th1OLLZsu/view?usp=sharing)
+[![Mozilla Otari](https://img.shields.io/badge/Powered%20By-Mozilla%20Otari-00C4B4?style=for-the-badge)](https://otari.ai)
+[![Local Edge](https://img.shields.io/badge/Local%20Edge-Ollama%20llama3.2-white?style=for-the-badge)](https://ollama.com)
 [![Privacy](https://img.shields.io/badge/Air--Gap-0%20Bytes%20Leaked-emerald?style=for-the-badge)](#)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue?style=for-the-badge)](LICENSE)
+[![Tests](https://img.shields.io/badge/tests-16%20passed-brightgreen.svg)](#)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 ---
 
-## The Vision: "Owners, Not Renters"
-
-Modern software teams face an impossible dilemma:
-* **The Local Model Bottleneck:** Running models locally on personal computers (via Ollama, llama.cpp, etc.) is private, offline, and zero-cost—**but** small local SLMs (1B–8B) lack the reasoning capacity for deep architectural refactoring, multi-file synthesis, and complex distributed system design.
-* **The Cloud Privacy & Cost Trap:** Cloud frontier models have reasoning horsepower, **but** sending entire codebases, database URIs, API keys, and corporate secrets to cloud endpoints creates massive IP leakage and burns through token budgets.
-
-**SovereignMesh** unites both worlds:
-1. **Local Edge Tier (`llama3.2:1b` on PC):** Handles fast-path tasks (docstrings, syntax triage, regex, unit tests) 100% locally on your computer for **$0** with zero network exposure.
-2. **Air-Gap Secret Vault:** When heavy reasoning is required, automatically scans and scrubs all secrets (API keys, DB connection strings, internal IPs, PII) into deterministic session tokens (`[VAULT_KEY_...]`) stored exclusively in local RAM.
-3. **Otari Hosted Muscle (`alibaba/qwen-3.5-35b-a3b`):** Dispatches only the scrubbed, abstract logic problem to Mozilla's hosted open-weight gateway, enforcing strict per-task budget quotas.
-4. **Local Rehydration:** Once the cloud solution arrives, safely restores the original secrets back into place within local RAM before touching disk.
+> 🎬 **Demo Video Walkthrough (3 mins):** [Watch on Google Drive](https://drive.google.com/file/d/1LgIBT3jSXgmCB3HMGcdogS_th1OLLZsu/view?usp=sharing)  
+> 🏆 **Built for:** Mozilla Otari Hackathon — *"Developers Wilding: Online"* (MozFest)  
+> 🏷️ **Track:** Developers Wilding: Online (Mozilla Otari)
 
 ---
 
-## Architecture
+## 🎯 The Vision: "Owners, Not Renters"
+
+Modern software engineering teams face an impossible dilemma:
+
+* **The Local Model Bottleneck:** Running models locally on personal computers (via Ollama, llama.cpp, etc.) is private, offline, and zero-cost—**but** small local SLMs (1B–3B) lack the reasoning capacity for deep architectural refactoring, multi-file synthesis, and complex distributed system design.
+* **The Cloud Privacy & Cost Trap:** Cloud frontier models have reasoning horsepower, **but** sending entire codebases, database URIs, API keys, and corporate secrets to external endpoints creates severe IP leakage and burns through token budgets with no spend control.
+
+**SovereignMesh bridges this divide.** It introduces an enterprise developer gateway that proves open-source models and hosted open-weight infrastructure give developers true sovereignty:
+
+1. **⚡ Fast-Path Edge Triage ($0):** Routine coding tasks (docstrings, syntax triage, regex, unit tests) are solved 100% locally on your PC via **Ollama (`llama3.2:1b`)** for **$0** with zero network exposure.
+2. **🛡️ Zero-Leak RAM Air-Gap:** When complex reasoning is needed, an AST regex quarantine engine strips all sensitive credentials (AWS keys, Stripe secrets, MongoDB URIs, private IPs, emails) and isolates them exclusively in local RAM as deterministic vault tokens (`[VAULT_...]`).
+3. **☁️ Mozilla Otari Hosted Muscle:** Dispatches only the scrubbed, abstract logic problem to Mozilla Otari's hosted gateway (`alibaba/qwen-3.5-35b-a3b`, `meta/llama-3.3-70b-instruct`, etc.) under strict per-session budget caps ($2.00 free virtual key limit).
+4. **🔄 In-Memory Rehydration:** Once the cloud response returns, safely restores the original secrets back into place within local RAM before rendering the verified patch.
+
+---
+
+## 📸 Interface & Workflow Walkthrough
+
+### 1. Dual-Pane Studio & Gateway Console
+An enterprise developer environment equipped with real-time telemetry meters, model engine selector, multi-scenario loader, and dual-pane editor.
+
+![Studio Overview](docs/screenshots/01-studio-overview.png)
+
+---
+
+### 2. Sensitive Code Input & Automatic Triage
+The developer inputs real-world enterprise code containing sensitive credentials (AWS access keys, Stripe live keys, production MongoDB connection strings, and internal billing gateway IPs).
+
+![Sensitive Code Input](docs/screenshots/02-sensitive-code-input.png)
+
+---
+
+### 3. Real-Time Pipeline Trajectory
+Upon execution, SovereignMesh's live stream logs every step of the lifecycle: **TRIAGE** (evaluates complexity) ➔ **SANITIZATION** (quarantines secrets in local RAM) ➔ **EXECUTION** (dispatches scrubbed payload to Otari Cloud) ➔ **REHYDRATION** (restores original credentials locally).
+
+![Live Pipeline Trajectory](docs/screenshots/03-live-pipeline-trajectory.png)
+
+---
+
+### 4. Zero-Leak Air-Gap Redaction Diff
+The **Air-Gap Diff** tab verifies that **zero bytes of sensitive credentials ever left the machine**. It displays the quarantined credential matrix and the scrubbed abstract code dispatched over the wire.
+
+![Air-Gap Quarantine Diff](docs/screenshots/04-air-gap-quarantine-diff.png)
+
+---
+
+### 5. Verified Solution with Local Rehydration
+The generated solution arrives from Otari Cloud with placeholder tokens. SovereignMesh immediately rehydrates the original secrets from local RAM, providing a clean, verified, production-ready patch with one-click copy.
+
+![Rehydrated Solution](docs/screenshots/05-rehydrated-solution.png)
+
+---
+
+### 6. Fast-Path On-Device Edge Routing ($0 Cost)
+For lightweight tasks like JSDoc generation or type annotations, SovereignMesh's dual-tier router automatically detects low complexity and executes 100% locally on Ollama (`llama3.2:1b`) for **$0 cost** and zero network bytes.
+
+![Local Edge Docstring](docs/screenshots/06-local-edge-docstring.png)
+
+---
+
+### 7. Token Observability & Spend Governance
+A comprehensive observability dashboard that tracks where every single token goes: input vs completion tokens, per-task latency, dollars saved by edge inference, and budget tracking against the strict **$2.00 virtual spend cap**.
+
+![Token Observability](docs/screenshots/07-token-observability-governor.png)
+
+---
+
+### 8. Air-Gap Vault & Data Compliance Matrix
+An enterprise data compliance dashboard showing active session tokens, protection mechanisms (AST scan + RAM quarantine), and one-click **Export Compliance Audit JSON** for security teams.
+
+![Air-Gap Compliance Vault](docs/screenshots/08-air-gap-compliance-vault.png)
+
+---
+
+## 🧩 Architectural Data Flow
 
 ```
-[ Developer / IDE / CLI / UI ]
-              │
-              ▼
-┌─────────────────────────────────────────────────────────────┐
-│  LOCAL PC EDGE (Ollama: llama3.2:1b on localhost:11434)     │
-│  • Triage Router: Evaluates complexity & token cost.        │
-│  • Fast Path: Solves lightweight tasks locally for $0.      │
-│  • Air-Gap Sanitizer: Isolates credentials into RAM Vault.  │
-└─────────────────────────────────────────────────────────────┘
-              │ (Only scrubbed abstract logic payload exits)
-              ▼
-┌─────────────────────────────────────────────────────────────┐
-│  MOZILLA OTARI CLOUD GATEWAY (https://otari.ai/api/v1)      │
-│  • Engine: alibaba/qwen-3.5-35b-a3b / DeepSeek / Llama 3.3  │
-│  • Governor: Enforces virtual key budget caps & token burn  │
-│  • Generates high-tier architectural reasoning.             │
-└─────────────────────────────────────────────────────────────┘
-              │
-              ▼
-┌─────────────────────────────────────────────────────────────┐
-│  LOCAL REHYDRATOR & VERIFIER (Local RAM)                    │
-│  • Swaps [VAULT_...] placeholders with original secrets.    │
-│  • Zero credentials ever hit external servers or logs.      │
-└─────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────┐
+│                        DEVELOPER / CLI / UI                            │
+└──────────────────────────────────┬─────────────────────────────────────┘
+                                   │
+                                   ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│  LOCAL PC EDGE (localhost:11434 - Ollama llama3.2:1b)                  │
+│                                                                        │
+│  1. Dual-Tier Triage Router                                            │
+│     ├─ Low Complexity (Docstrings, Format) ──> Solve Locally ($0 Cost) │
+│     └─ High Complexity (Async Arch, Refactor) ──> Route to Cloud       │
+│                                                                        │
+│  2. Air-Gap Secret Sanitizer (AST & Pattern Engine)                    │
+│     ├─ Strips AWS, Stripe, Mongo URI, IPs, Corporate Emails            │
+│     └─ Replaces with [VAULT_...] tokens stored strictly in RAM         │
+└──────────────────────────────────┬─────────────────────────────────────┘
+                                   │ (Only scrubbed abstract logic exits PC)
+                                   ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│  MOZILLA OTARI CLOUD GATEWAY (https://otari.ai/api/v1)                 │
+│                                                                        │
+│  • Engine: alibaba/qwen-3.5-35b-a3b / Llama 3.3 70B / DeepSeek V3      │
+│  • Spend Governor: Enforces virtual budget cap ($2.00 limit)           │
+│  • Generates high-tier architectural reasoning and code patch          │
+└──────────────────────────────────┬─────────────────────────────────────┘
+                                   │
+                                   ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│  LOCAL RAM REHYDRATOR & VERIFIER (On-Device Local RAM)                 │
+│                                                                        │
+│  • Maps [VAULT_...] tokens back to real credentials                    │
+│  • Zero credentials ever hit external servers or cloud logs            │
+│  • Verified, deployable patch ready for developer review               │
+└────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Features
+## ✨ Core Pillars (Aligned with Mozilla Otari)
 
-- **⚡ Dual-Tier Triage Router:** Automatically distinguishes between simple tasks (docstrings, format, lint) vs. heavy tasks (architecture, refactor, race conditions).
-- **🛡️ Zero-Leak Air-Gap Sanitizer:** Detects and scrubs:
-  - AWS, OpenAI, Stripe, and generic API keys
-  - MongoDB, PostgreSQL, MySQL, and Redis connection URIs
-  - Private IPv4/IPv6 addresses and internal hostnames
-  - Corporate emails and sensitive employee identifiers
-- **💰 Budget & Token Governor:** Real-time tracking of session token burn, cost savings generated by local inference, and strict cap enforcement.
-- **🖥️ Dual Interfaces:**
-  - **Cyber-Telemetry Web Dashboard:** Real-time WebSocket event streams, air-gap diff inspector, and live token meters.
-  - **Developer CLI (`mesh`):** Seamless terminal workflow for `mesh status`, `mesh audit <file>`, and `mesh run <task>`.
+| Mozilla Otari Pillar | SovereignMesh Implementation |
+| :--- | :--- |
+| **"Connects your agents to any model, open-weight or frontier"** | Seamless hybrid gateway uniting on-device edge models (Ollama `llama3.2:1b`) with Mozilla Otari's 150+ catalog open-weight models (`qwen-3.5-35b`, `llama-3.3-70b`, `deepseek-v3`, `codestral`) with zero vendor lock-in. |
+| **"Gives open-weight models the tools they're missing"** | Out-of-the-box equipped tools: **AirGap-RAM-Vault**, **AST-Pattern-Sanitizer**, **Deterministic-Rehydrator**, and **Dual-Tier-Router**, exposing clean tool definitions with audit trails. |
+| **"Shows where every token goes, keeps you in control of what you spend"** | Real-time token telemetry waterfall, edge savings counter, per-request token cost accounting, and strict budget caps ($2.00 limit). |
 
 ---
 
-## Quickstart (60 Seconds)
+## 📁 Repository Structure
+
+```
+sovereign-mesh/
+├── docs/
+│   └── screenshots/              # High-resolution application previews
+│       ├── 01-studio-overview.png
+│       ├── 02-sensitive-code-input.png
+│       ├── 03-live-pipeline-trajectory.png
+│       ├── 04-air-gap-quarantine-diff.png
+│       ├── 05-rehydrated-solution.png
+│       ├── 06-local-edge-docstring.png
+│       ├── 07-token-observability-governor.png
+│       └── 08-air-gap-compliance-vault.png
+├── demo/
+│   └── sample_sensitive_service.js # Test microservice containing secrets
+├── src/
+│   ├── cli/                      # Developer CLI (`mesh` commands)
+│   ├── core/
+│   │   ├── vault.ts              # Ephemeral in-memory bidirectional secret vault
+│   │   ├── sanitizer.ts          # Zero-leak regex & AST scanner (AWS, DB, IP, PII)
+│   │   ├── rehydrator.ts         # In-memory secret restoration engine
+│   │   ├── triage.ts             # Dual-tier router (LOCAL_ONLY vs OTARI_HYBRID)
+│   │   ├── governor.ts           # Token tracking, spend caps, & audit logger
+│   │   └── orchestrator.ts       # Pipeline coordinator
+│   ├── gateway/
+│   │   ├── ollama.ts             # Local edge client (localhost:11434)
+│   │   └── otari.ts              # Mozilla Otari API client with retry & backoff
+│   └── server/
+│       └── index.ts              # Fastify REST & WebSocket telemetry server
+├── test/
+│   └── run_all.ts                # Comprehensive 16-test automated verification suite
+├── ui/                           # React 19 + Tailwind CSS + Vite Frontend Console
+│   ├── src/
+│   │   ├── components/           # Sidebar, Header, MeshLogo
+│   │   └── views/                # StudioView, ObservabilityView, VaultView, ModelsView
+│   └── package.json
+├── package.json
+├── tsconfig.json
+└── README.md
+```
+
+---
+
+## ⚡ Quickstart (60 Seconds)
 
 ### 1. Prerequisites
-- [Node.js](https://nodejs.org) (v20+)
-- [Ollama](https://ollama.com) installed with `llama3.2:1b`:
+* **Node.js** (v20+ recommended)
+* **Ollama** installed with `llama3.2:1b`:
   ```bash
   ollama run llama3.2:1b
   ```
 
 ### 2. Installation
 ```bash
-git clone https://github.com/your-username/sovereign-mesh.git
+git clone https://github.com/YOUR_GITHUB_USERNAME/sovereign-mesh.git
 cd sovereign-mesh
 npm install
 cd ui && npm install && cd ..
 ```
 
-### 3. Configuration
-Add your Otari API key to `.env.local` (never committed):
+### 3. Configure Your Otari API Key
+Create `.env.local` in the project root (already strictly gitignored):
 ```env
 OTARI_API_KEY=your_actual_otari_key_here
 ```
 
-### 4. Run the Automated Tests
+### 4. Run the Automated Test Suite
 ```bash
 npm test
 ```
+*Expected: 16/16 tests passing.*
 
 ### 5. Launch SovereignMesh
-In one terminal, start the gateway server:
+In one terminal, start the gateway backend:
 ```bash
 npm run dev:server
 ```
 
-In a second terminal, launch the Cyber Dashboard:
+In a second terminal, launch the Web Console:
 ```bash
 npm run dev:ui
 ```
@@ -112,46 +230,72 @@ Open **`http://localhost:5173`** in your browser.
 
 ---
 
-## Terminal CLI Usage
+## 💻 Terminal Developer CLI (`mesh`)
 
-### Audit a File for Leaks:
+SovereignMesh provides a full-featured CLI for terminal-first developers:
+
+### 1. Audit a File for Sensitive Credentials
 ```bash
 npm run cli -- audit demo/sample_sensitive_service.js
 ```
+*Scans code, reports detected AWS/Stripe keys, database URIs, and displays deterministic tokenization preview without sending data anywhere.*
 
-### Run an Air-Gapped Task:
+### 2. Run an Air-Gapped Task
 ```bash
-# Auto-triaged (routes to local or cloud based on complexity)
-npm run cli -- run "Refactor to connection pooling" -f demo/sample_sensitive_service.js
+# Auto-Triage: Evaluates complexity and routes to edge or cloud
+npm run cli -- run "Refactor to async connection pooling" -f demo/sample_sensitive_service.js
 
-# Force Local Edge ($0 cost, 100% offline)
+# Force Local Edge: Solves locally on Ollama for $0
 npm run cli -- run "Add JSDoc documentation" -f demo/sample_sensitive_service.js -p local
 
-# Force Otari Cloud Acceleration
+# Force Otari Cloud: Leverages hosted Qwen-35B
 npm run cli -- run "Architect circuit breaker policy" -f demo/sample_sensitive_service.js -p cloud
 ```
 
-### Check Telemetry & Budgets:
+### 3. Check Session Telemetry & Budgets
 ```bash
 npm run cli -- status
 ```
 
 ---
 
-## 2-Minute Demo Video Script (For DoraHacks Submission)
+## 🧪 Test Suite Verification
 
-1. **The Hook (0:00 - 0:25):** 
-   *"As developers, we want to run local models on our laptops for privacy and zero cost. But 1B models can't architect large systems. And sending our raw company credentials to cloud APIs is a security nightmare. Meet SovereignMesh: The Zero-Leak Hybrid Agent Gateway."*
-2. **The Problem & Audit (0:25 - 0:45):** 
-   *Show `demo/sample_sensitive_service.js` containing real AWS keys, MongoDB connection strings, and internal IPs. Run `mesh audit` in the terminal to show instant detection and air-gap tokenization.*
-3. **The Web Dashboard & Live Stream (0:45 - 1:20):** 
-   *Open the web dashboard. Submit an architectural refactor. Show the live trajectory: Triage -> Sanitizer -> Otari Cloud reasoning (`alibaba/qwen-3.5-35b-a3b`) -> Local RAM Rehydrator. Switch to the 'Air-Gap Diff' tab to show the '0 Bytes Leaked' badge.*
-4. **The Governor & Local Savings (1:20 - 1:45):** 
-   *Point out the Telemetry bar showing dollars saved locally by triaging simple tasks to Ollama vs dollars spent on Otari, backed by strict budget caps.*
-5. **Closing (1:45 - 2:00):** 
-   *"SovereignMesh proves that open-source models and hosted open-weight infrastructure like Mozilla Otari give developers true sovereignty: owners, not renters."*
+Every component is covered by comprehensive automated tests (`npm test`):
+
+```text
+=== SovereignMesh Test Suite ===
+
+1. Testing Vault & Air-Gap Sanitizer:
+  ✔ PASS: Detected and scrubbed all 5 sensitive secrets
+  ✔ PASS: Raw AWS key stripped from sanitized content
+  ✔ PASS: Database credentials stripped
+  ✔ PASS: Raw secret token stripped
+  ✔ PASS: Inserted [VAULT_...] tokens
+
+2. Testing In-Memory Rehydration:
+  ✔ PASS: Restored 2 secrets in local RAM
+  ✔ PASS: AWS Key restored accurately
+  ✔ PASS: DB URI restored accurately
+  ✔ PASS: Tokens cleanly replaced
+
+3. Testing Dual-Tier Triage Router:
+  ✔ PASS: Simple docstring task triaged to LOCAL_ONLY ($0)
+  ✔ PASS: Complex architectural refactor triaged to OTARI_HYBRID
+
+4. Testing Token & Budget Governor:
+  ✔ PASS: Total requests tracked correctly
+  ✔ PASS: Local request recorded
+  ✔ PASS: Cloud request recorded
+  ✔ PASS: Local cost savings calculated ($0.0002)
+  ✔ PASS: Zero-leak redaction count tracked
+
+=== Test Summary ===
+Passed: 16 | Failed: 0
+```
 
 ---
 
-## License
-Apache-2.0. Built with pride for Mozilla.ai & MozFest.
+## 📄 License
+
+Apache-2.0. Built with pride for **Mozilla.ai & MozFest Hackathon ("Developers Wilding: Online")**.
